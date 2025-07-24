@@ -43,6 +43,7 @@ object Main extends App with CurrencyUtils {
     println(s"Error[${parserError.id}]: ${parserError.message}")
   }
 
+  // the money currency is in pennies, e.g. £1 = 100p
   private val builtinProductDatabase: Map[String, Int] = Map(
     "soup" -> 65,
     "bread" -> 80,
