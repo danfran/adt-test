@@ -37,6 +37,8 @@ class ShoppingBasketTest extends AnyFunSuite {
       ("PriceBasket ", mockDB, allDiscounts, Left(ParserError("EMPTY_CMD", "Missing basket items"))),
       ("PrirceBasket Apples Milk Bread Soup Soupss", mockDB, allDiscounts, Left(ParserError("BAD_COMMAND", "Unknown command 'prircebasket'"))),
       ("PriceBasket Apples Milk Bread Soup Soupss", mockDB, allDiscounts, Left(ParserError("ITEM_NOT_FOUND", "The item 'soupss' does not exist"))),
+      ("pricebasket milk ", mockDB, allDiscounts, Right(ProcessedBasket(List(), 130))),
+      ("PriceBasket Milk ", mockDB, allDiscounts, Right(ProcessedBasket(List(), 130))),
       ("PriceBasket Apples Milk Bread", mockDB, allDiscounts, Right(ProcessedBasket(List(Discount("Apples 10% off", 10)), 310))),
       ("PriceBasket Apples Milk Bread Soup ", mockDB, allDiscounts, Right(
         ProcessedBasket(List(Discount("Apples 10% off", 10)), 375)
