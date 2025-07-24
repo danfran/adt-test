@@ -1,4 +1,4 @@
-case class Discount(description: String, total: Double)
+case class Discount(description: String, total: Int)
 
 object Discounts {
 
@@ -8,7 +8,7 @@ object Discounts {
       numberOfApples <- groupedItems.get("apples")
     } yield Discount(
       description = "Apples 10% off",
-      total = BigDecimal(.1 * numberOfApples * applesPrice).setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+      total = BigDecimal(.1 * numberOfApples * applesPrice).setScale(2, BigDecimal.RoundingMode.HALF_UP).toInt
     )
 
   def twoTinsSoupFor50PercentBreadDiscount(groupedItems: Map[String, Int], productDatabase: Map[String, Int]): Option[Discount] =
@@ -20,7 +20,7 @@ object Discounts {
     } yield Discount(
       description = "Buy 2 tins of soup and get a loaf of bread for half price",
       total = BigDecimal(.5 * Math.min(numberOfBreads, numberOfTinSoups / 2) * breadPrice)
-        .setScale(2, BigDecimal.RoundingMode.HALF_UP).toDouble
+        .setScale(2, BigDecimal.RoundingMode.HALF_UP).toInt
     )
 }
 

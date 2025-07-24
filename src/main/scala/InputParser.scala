@@ -16,7 +16,7 @@ object InputParser {
 
   def validateCommandLine(command: String, items: Seq[String], productDatabase: Map[String, Int]): Either[ParserError, (String, Seq[String])] =
     for {
-      validatedCommand <- Either.cond(commands.contains(command), command, ParserError("BAD_COMMAND", "Unexisting command"))
+      validatedCommand <- Either.cond(commands.contains(command), command, ParserError("BAD_COMMAND", s"Unknown command '$command'"))
 
       _ <- items.foldLeft[Either[ParserError, List[String]]](Right(List.empty)) { (accEither, item) =>
         accEither.flatMap { accList =>

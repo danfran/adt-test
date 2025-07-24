@@ -35,7 +35,7 @@ class InputParserTest extends AnyFunSuite {
       // to verify "fail fast"
       ("pricebasket", Seq("mango", "banana"), mockDB, Left(ParserError("ITEM_NOT_FOUND", s"The item 'mango' does not exist"))),
       ("pricebasket", Seq("banana", "mango"), mockDB, Left(ParserError("ITEM_NOT_FOUND", s"The item 'banana' does not exist"))),
-      ("somecommand", Seq.empty[String], mockDB, Left(ParserError("BAD_COMMAND", "Unexisting command"))),
+      ("somecommand", Seq.empty[String], mockDB, Left(ParserError("BAD_COMMAND", "Unknown command 'somecommand'"))),
     )
 
     forAll(tests)  { (cmd, items, db, expected) =>
