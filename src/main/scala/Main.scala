@@ -64,4 +64,3 @@ object Main extends App with CurrencyUtils {
     }
   }
 }
-
