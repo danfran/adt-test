@@ -21,7 +21,12 @@ object ShoppingBasket {
       (_, validateItems) = validatedCommandLine
       groupedItems = groupBasketItems(validateItems)
       appliedDiscounts = discounts.foldLeft(Seq.empty[Discount]) {
-        case (applied, discount: DiscountToBeApplied) => applied ++ discount(groupedItems, productDatabase)
+        case (applied, discount: DiscountToBeApplied) =>
+          val d: Option[Discount] = discount(groupedItems, productDatabase)
+          d match {
+            case Some(v) if v.total > 0 => applied ++ d
+            case _ => applied
+          }
       }
       subTotal = calculateSubTotalPrice(groupedItems, productDatabase)
     } yield ProcessedBasket(appliedDiscounts, subTotal)

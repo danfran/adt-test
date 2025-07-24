@@ -2,6 +2,8 @@ import java.text.NumberFormat
 import java.util.Locale
 import ShoppingBasket.processBasket
 
+import scala.io.StdIn
+
 trait CurrencyUtils {
   private val ukLocale = new Locale("en", "GB")
 
@@ -23,23 +25,21 @@ object Main extends App with CurrencyUtils {
 
     println(s"Subtotal: ${formatUKCurrency(totalPrice)}")
 
-    println(
-      if (processedBasket.appliedDiscounts.isEmpty) {
-        println("(No offers available)")
-      } else {
-        processedBasket.appliedDiscounts.foreach {
-          discount =>
-            println(s"${discount.description}: ${formatUKCurrency(discount.total)}")
-            totalPrice -= discount.total
-        }
+    if (processedBasket.appliedDiscounts.isEmpty) {
+      println("(No offers available)")
+    } else {
+      processedBasket.appliedDiscounts.foreach {
+        discount =>
+          println(s"${discount.description}: ${formatUKCurrency(discount.total)}")
+          totalPrice -= discount.total
       }
-    )
+    }
 
     println(s"Total Price: ${formatUKCurrency(totalPrice)}")
   }
 
   private def printError(parserError: ParserError): Unit = {
-    println("The bill cannot be processed due to the following:")
+    println("The bill cannot be processed due to the following ->>")
     println(s"Error[${parserError.id}]: ${parserError.message}")
   }
 
@@ -51,15 +51,17 @@ object Main extends App with CurrencyUtils {
     "apples" -> 100
   )
 
-  // TODO replace with input from console
-  val commandLine = "PrirceBasket Apples Milk Bread Soup Soupss"
+  while(true) {
+    print(">>> ")
+    val commandLine = StdIn.readLine()
 
-  private val processedBasket: Either[ParserError, ProcessedBasket] =
-    processBasket(commandLine, builtinProductDatabase, DiscountsToBeApplied.allDiscounts)
+    val processedBasket: Either[ParserError, ProcessedBasket] =
+      processBasket(commandLine, builtinProductDatabase, DiscountsToBeApplied.allDiscounts)
 
-  processedBasket match {
-    case Right(processedBasket) => printBill(processedBasket)
-    case Left(parserError) => printError(parserError)
+    processedBasket match {
+      case Right(processedBasket) => printBill(processedBasket)
+      case Left(parserError) => printError(parserError)
+    }
   }
-
 }
+
